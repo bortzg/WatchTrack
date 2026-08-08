@@ -18,8 +18,14 @@ const create = async (req, res) => {
 
 const list = async (req, res) => {
   try {
-    const filter = req.query.genre
-      ? { genre: new RegExp(req.query.genre, "i") }
+    const searchTerm = String(req.query.search || req.query.genre || "").trim();
+    const escapedSearch = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const filter = searchTerm
+      ? {
+          $or: ["title", "genre", "director"].map((field) => ({
+            [field]: new RegExp(escapedSearch, "i"),
+          })),
+        }
       : {};
     let movies = await Movie.find(filter).sort({ created: -1 });
     res.json(movies);

@@ -4,18 +4,18 @@ import MovieCard from "../components/MovieCard.jsx";
 
 export default function Home() {
   const [movies, setMovies] = useState([]);
-  const [genre, setGenre] = useState("");
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
     setLoading(true);
     setError("");
-    getMovies(genre)
+    getMovies(search)
       .then(setMovies)
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [genre]);
+  }, [search]);
 
   return (
     <div className="page">
@@ -23,9 +23,9 @@ export default function Home() {
         <h1>Browse Movies</h1>
         <input
           className="genre-filter"
-          placeholder="Filter by genre..."
-          value={genre}
-          onChange={(e) => setGenre(e.target.value)}
+          placeholder="Search by title, genre, or director..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
       </div>
 

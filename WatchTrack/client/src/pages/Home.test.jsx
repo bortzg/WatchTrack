@@ -36,7 +36,10 @@ describe("Home", () => {
     expect(await screen.findByRole("heading", { name: "Parasite" })).toBeInTheDocument();
     expect(getMovies).toHaveBeenCalledWith("");
 
-    await user.type(screen.getByPlaceholderText("Filter by genre..."), "Drama");
+    await user.type(
+      screen.getByPlaceholderText("Search by title, genre, or director..."),
+      "Drama"
+    );
     await waitFor(() => expect(getMovies).toHaveBeenLastCalledWith("Drama"));
   });
 });
