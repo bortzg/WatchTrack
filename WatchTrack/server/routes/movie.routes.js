@@ -8,13 +8,13 @@ import authCtrl from "../controllers/auth.controller.js";
 router
   .route("/api/movies")
   .get(movieCtrl.list) // anyone can browse
-  .post(movieCtrl.create); // TODO: add back authCtrl.requireSignin after testing
+  .post(authCtrl.requireSignin, movieCtrl.create);
 
 router
   .route("/api/movies/:movieId")
   .get(movieCtrl.read)
-  .put(movieCtrl.update) // TODO: add back authCtrl.requireSignin, movieCtrl.isOwner
-  .delete(movieCtrl.remove); // TODO: add back authCtrl.requireSignin, movieCtrl.isOwner
+  .put(authCtrl.requireSignin, movieCtrl.isOwner, movieCtrl.update)
+  .delete(authCtrl.requireSignin, movieCtrl.isOwner, movieCtrl.remove);
 
 router
   .route("/api/movies/:movieId/reviews")

@@ -10,6 +10,7 @@ export default function Home() {
 
   useEffect(() => {
     setLoading(true);
+    setError("");
     getMovies(genre)
       .then(setMovies)
       .catch((err) => setError(err.message))

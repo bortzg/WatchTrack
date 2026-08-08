@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context.jsx";
 
 export default function Navbar() {
@@ -10,26 +10,42 @@ export default function Navbar() {
     navigate("/");
   };
 
+  const linkClass = ({ isActive }) => (isActive ? "active" : "");
+
   return (
     <nav className="navbar">
       <Link to="/" className="brand">
-        <img src="/logo.jpeg" alt="WatchTrack logo" style={{ height: "50px", verticalAlign: "middle", marginRight: "8px" }} />
+        <img src="/logo.jpeg" alt="WatchTrack logo" className="brand-logo" />
         WatchTrack
       </Link>
       <div className="nav-links">
-        <Link to="/">Movies</Link>
+        <NavLink to="/" end className={linkClass}>
+          Movies
+        </NavLink>
         {token ? (
           <>
-            <Link to="/movies/new">Add Movie</Link>
+            <NavLink to="/movies/new" className={linkClass}>
+              Add Movie
+            </NavLink>
+            <NavLink to="/users" className={linkClass}>
+              Users
+            </NavLink>
+            <NavLink to="/profile" className={linkClass}>
+              MyProfile
+            </NavLink>
             <span className="nav-user">Hi, {user?.name}</span>
             <button onClick={handleLogout} className="link-button">
-              Sign out
+              Signout
             </button>
           </>
         ) : (
           <>
-            <Link to="/signin">Sign in</Link>
-            <Link to="/signup">Sign up</Link>
+            <NavLink to="/signin" className={linkClass}>
+              Sign in
+            </NavLink>
+            <NavLink to="/signup" className={linkClass}>
+              Sign up
+            </NavLink>
           </>
         )}
       </div>

@@ -1,10 +1,11 @@
 import Movie from "../models/movie.model.js";
 import extend from "lodash/extend.js";
 import errorHandler from "./error.controller.js";
+import Review from "../models/review.model.js";
 
 const create = async (req, res) => {
   const movie = new Movie(req.body);
-  movie.createdBy = req.auth?._id || req.body.createdBy; // TEMP: fallback while auth is disabled for testing
+  movie.createdBy = req.auth._id;
   try {
     await movie.save();
     return res.status(200).json(movie);
@@ -52,7 +53,11 @@ const read = (req, res) => {
 const update = async (req, res) => {
   try {
     let movie = req.movie;
-    movie = extend(movie, req.body);
+    const allowedFields = ["title", "director", "year", "genre", "description", "posterUrl"];
+    const updates = Object.fromEntries(
+      Object.entries(req.body).filter(([key]) => allowedFields.includes(key))
+    );
+    movie = extend(movie, updates);
     movie.updated = Date.now();
     await movie.save();
     res.json(movie);
@@ -66,6 +71,7 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     let movie = req.movie;
+    await Review.deleteMany({ movie: movie._id });
     let deletedMovie = await movie.deleteOne();
     res.json(deletedMovie);
   } catch (err) {
@@ -78,7 +84,7 @@ const remove = async (req, res) => {
 // Only the movie's creator (or an admin, if you add roles later) can edit/delete
 const isOwner = (req, res, next) => {
   const authorized =
-    req.movie && req.auth && req.movie.createdBy.toString() === req.auth._id;
+    req.movie?.createdBy && req.auth && req.movie.createdBy.toString() === req.auth._id;
   if (!authorized) {
     return res.status(403).json({
       error: "User is not authorized",

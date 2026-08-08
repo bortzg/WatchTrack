@@ -1,14 +1,18 @@
-// const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:3000";
-const API_BASE = "http://localhost:3000";
+const API_BASE = (import.meta.env.VITE_API_URL || "http://localhost:3000").replace(/\/+$/, "");
 async function request(path, { method = "GET", body, token } = {}) {
   const headers = { "Content-Type": "application/json" };
   if (token) headers.Authorization = `Bearer ${token}`;
 
-  const res = await fetch(`${API_BASE}${path}`, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  });
+  let res;
+  try {
+    res = await fetch(`${API_BASE}${path}`, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } catch {
+    throw new Error(`Cannot connect to API at ${API_BASE}`);
+  }
 
   const data = await res.json().catch(() => ({}));
 
@@ -22,6 +26,14 @@ async function request(path, { method = "GET", body, token } = {}) {
 export const signup = (user) => request("/api/users", { method: "POST", body: user });
 export const signin = (credentials) =>
   request("/api/auth/signin", { method: "POST", body: credentials });
+
+// --- Users ---
+export const getUsers = (token) => request("/api/users", { token });
+export const getUser = (userId, token) => request(`/api/users/${userId}`, { token });
+export const updateUser = (userId, updates, token) =>
+  request(`/api/users/${userId}`, { method: "PUT", body: updates, token });
+export const deleteUser = (userId, token) =>
+  request(`/api/users/${userId}`, { method: "DELETE", token });
 
 // --- Movies ---
 export const getMovies = (genre) =>

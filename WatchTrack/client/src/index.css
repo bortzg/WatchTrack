@@ -34,9 +34,17 @@ a {
 }
 
 .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: 0.02em;
+}
+
+.brand-logo {
+  height: 28px;
+  width: 28px;
 }
 
 .nav-links {
@@ -45,8 +53,19 @@ a {
   gap: 1.2rem;
 }
 
+.nav-links a {
+  color: var(--muted);
+}
+
 .nav-links a:hover {
   color: var(--accent);
+}
+
+.nav-links a.active {
+  color: var(--text);
+  font-weight: 600;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 2px;
 }
 
 .nav-user {
@@ -254,8 +273,66 @@ button:disabled {
   color: #e57373;
 }
 
+.success-text {
+  color: #6fcf97;
+}
+
 .empty-state {
   color: var(--muted);
+}
+
+.owner-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.review-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+.review-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.review-edit-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Users table */
+.user-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.user-table th,
+.user-table td {
+  text-align: left;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.user-table th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.user-table tr:last-child td {
+  border-bottom: none;
 }
 
 @media (max-width: 600px) {

@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { getMovie, getReviews, createReview, deleteReview, deleteMovie } from "../api/api.js";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import {
+  getMovie,
+  getReviews,
+  createReview,
+  updateReview,
+  deleteReview,
+  deleteMovie,
+} from "../api/api.js";
 import { useAuth } from "../context/auth.context.jsx";
 import ReviewList from "../components/ReviewList.jsx";
 
@@ -39,6 +46,16 @@ export default function MovieDetail() {
       await createReview(movieId, { rating: Number(rating), comment }, token);
       setComment("");
       setRating(5);
+      loadData();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleReviewUpdate = async (reviewId, updates) => {
+    setError("");
+    try {
+      await updateReview(reviewId, updates, token);
       loadData();
     } catch (err) {
       setError(err.message);
@@ -86,9 +103,14 @@ export default function MovieDetail() {
           </p>
           <p>{movie.description}</p>
           {isOwner && (
-            <button className="danger-button" onClick={handleMovieDelete}>
-              Delete Movie
-            </button>
+            <div className="owner-actions">
+              <Link to={`/movies/${movieId}/edit`} className="link-button">
+                Edit Movie
+              </Link>
+              <button className="danger-button" onClick={handleMovieDelete}>
+                Delete Movie
+              </button>
+            </div>
           )}
         </div>
       </div>
@@ -126,6 +148,7 @@ export default function MovieDetail() {
           reviews={reviews}
           currentUserId={user?._id}
           onDelete={handleReviewDelete}
+          onUpdate={handleReviewUpdate}
         />
       </section>
     </div>

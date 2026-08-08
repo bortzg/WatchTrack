@@ -57,7 +57,11 @@ const read = (req, res) => {
 const update = async (req, res) => {
   try {
     let review = req.review;
-    review = extend(review, req.body);
+    const updates = {
+      ...(req.body.rating !== undefined && { rating: req.body.rating }),
+      ...(req.body.comment !== undefined && { comment: req.body.comment }),
+    };
+    review = extend(review, updates);
     review.updated = Date.now();
     await review.save();
     res.json(review);

@@ -6,6 +6,9 @@ import MovieDetail from "./pages/MovieDetail.jsx";
 import AddMovie from "./pages/AddMovie.jsx";
 import SignIn from "./pages/SignIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import MyProfile from "./pages/MyProfile.jsx";
+import UsersList from "./pages/UsersList.jsx";
+import EditMovie from "./pages/EditMovie.jsx";
 
 export default function App() {
   return (
@@ -20,6 +23,30 @@ export default function App() {
             element={
               <PrivateRoute>
                 <AddMovie />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/movies/:movieId/edit"
+            element={
+              <PrivateRoute>
+                <EditMovie />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <MyProfile />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/users"
+            element={
+              <PrivateRoute>
+                <UsersList />
               </PrivateRoute>
             }
           />

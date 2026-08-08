@@ -1,6 +1,8 @@
 import User from "../models/user.model.js";
 import extend from "lodash/extend.js";
 import errorHandler from "./error.controller.js";
+import Movie from "../models/movie.model.js";
+import Review from "../models/review.model.js";
 const create = async (req, res) => {
   const user = new User(req.body);
   try {
@@ -16,7 +18,7 @@ const create = async (req, res) => {
 };
 const list = async (req, res) => {
   try {
-    let users = await User.find().select("name email updated created");
+    let users = await User.find().select("name updated created");
     res.json(users);
   } catch (err) {
     return res.status(400).json({
@@ -47,7 +49,11 @@ const read = (req, res) => {
 const update = async (req, res) => {
   try {
     let user = req.profile;
-    user = extend(user, req.body);
+    const allowedFields = ["name", "email", "password"];
+    const updates = Object.fromEntries(
+      Object.entries(req.body).filter(([key]) => allowedFields.includes(key))
+    );
+    user = extend(user, updates);
     user.updated = Date.now();
     await user.save();
     user.hashed_password = undefined;
@@ -62,6 +68,9 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     let user = req.profile;
+    const movieIds = await Movie.find({ createdBy: user._id }).distinct("_id");
+    await Review.deleteMany({ $or: [{ user: user._id }, { movie: { $in: movieIds } }] });
+    await Movie.deleteMany({ createdBy: user._id });
     let deletedUser = await user.deleteOne();
     deletedUser.hashed_password = undefined;
     deletedUser.salt = undefined;

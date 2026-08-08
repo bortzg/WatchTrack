@@ -48,21 +48,27 @@ UserSchema.path("hashed_password").validate(function (v) {
 
 UserSchema.methods = {
   authenticate: function (plainText) {
+    if (this.needsPasswordUpgrade()) {
+      return (
+        crypto.createHmac("sha1", this.salt).update(plainText).digest("hex") ===
+        this.hashed_password
+      );
+    }
     return this.encryptPassword(plainText) === this.hashed_password;
   },
   encryptPassword: function (password) {
     if (!password) return "";
     try {
-      return crypto
-        .createHmac("sha1", this.salt)
-        .update(password)
-        .digest("hex");
+      return crypto.pbkdf2Sync(password, this.salt, 120000, 64, "sha512").toString("hex");
     } catch (err) {
       return "";
     }
   },
   makeSalt: function () {
-    return Math.round(new Date().valueOf() * Math.random()) + "";
+    return crypto.randomBytes(16).toString("hex");
+  },
+  needsPasswordUpgrade: function () {
+    return this.hashed_password.length !== 128;
   },
 };
 

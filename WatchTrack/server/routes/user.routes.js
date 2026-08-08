@@ -6,7 +6,7 @@ import authCtrl from "../controllers/auth.controller.js";
 
 router
   .route("/api/users")
-  .get(userCtrl.list)
+  .get(authCtrl.requireSignin, userCtrl.list)
   .post(userCtrl.create); // register
 
 router.route("/api/auth/signin").post(authCtrl.signin);
