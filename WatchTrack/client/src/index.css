@@ -1,10 +1,11 @@
 :root {
-  --bg: #14151a;
-  --surface: #1e2028;
-  --text: #eceef2;
-  --muted: #9aa0ab;
-  --accent: #e8543e;
-  --border: #2c2f3a;
+  --bg: #f3f4f1;
+  --surface: #ffffff;
+  --text: #1b1d19;
+  --muted: #70766b;
+  --accent: #7f925e;
+  --accent-dark: #657747;
+  --border: #dfe3da;
 }
 
 * {
@@ -29,8 +30,8 @@ a {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface);
+  border-bottom: 1px solid var(--accent-dark);
+  background: var(--accent);
 }
 
 .brand {
@@ -40,6 +41,7 @@ a {
   font-size: 1.3rem;
   font-weight: 700;
   letter-spacing: 0.02em;
+  color: #fff;
 }
 
 .brand-logo {
@@ -54,22 +56,31 @@ a {
 }
 
 .nav-links a {
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .nav-links a:hover {
-  color: var(--accent);
+  color: #fff;
 }
 
 .nav-links a.active {
-  color: var(--text);
+  color: #fff;
   font-weight: 600;
-  border-bottom: 2px solid var(--accent);
+  border-bottom: 2px solid #fff;
   padding-bottom: 2px;
 }
 
 .nav-user {
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.navbar .link-button {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.navbar .link-button:hover {
+  color: #fff;
+  background: none;
 }
 
 .link-button {
@@ -83,6 +94,7 @@ a {
 
 .link-button:hover {
   color: var(--accent);
+  background: none;
 }
 
 /* Layout */
@@ -123,11 +135,12 @@ a {
 .movie-card:hover {
   transform: translateY(-3px);
   border-color: var(--accent);
+  box-shadow: 0 8px 22px rgba(71, 82, 55, 0.12);
 }
 
 .movie-poster {
   aspect-ratio: 2 / 3;
-  background: #2a2c36;
+  background: #e7eae3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -220,6 +233,10 @@ button {
   align-self: flex-start;
 }
 
+button:hover {
+  background: var(--accent-dark);
+}
+
 button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -230,6 +247,10 @@ button:disabled {
   border: 1px solid #c0392b;
   color: #e57373;
   margin-top: 1rem;
+}
+
+.danger-button:hover {
+  background: #fff1f0;
 }
 
 /* Reviews */

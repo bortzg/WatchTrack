@@ -36,8 +36,8 @@ export const deleteUser = (userId, token) =>
   request(`/api/users/${userId}`, { method: "DELETE", token });
 
 // --- Movies ---
-export const getMovies = (genre) =>
-  request(`/api/movies${genre ? `?genre=${encodeURIComponent(genre)}` : ""}`);
+export const getMovies = (search) =>
+  request(`/api/movies${search ? `?search=${encodeURIComponent(search)}` : ""}`);
 export const getMovie = (movieId) => request(`/api/movies/${movieId}`);
 export const createMovie = (movie, token) =>
   request("/api/movies", { method: "POST", body: movie, token });
