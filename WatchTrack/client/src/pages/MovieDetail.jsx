@@ -11,6 +11,13 @@ import {
 import { useAuth } from "../context/auth.context.jsx";
 import ReviewList from "../components/ReviewList.jsx";
 
+const DEFAULT_TRAILERS = {
+  "the dark knight": "https://www.youtube.com/watch?v=EXeTwQWrcwY",
+  parasite: "https://www.youtube.com/watch?v=isOGD_7hNIY",
+  "the matrix": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
+  interstellar: "https://www.youtube.com/watch?v=zSWdZVtXT7E",
+};
+
 export default function MovieDetail() {
   const { movieId } = useParams();
   const { token, user } = useAuth();
@@ -85,6 +92,7 @@ export default function MovieDetail() {
   if (!movie) return <div className="page">Movie not found.</div>;
 
   const isOwner = token && user?._id === movie.createdBy;
+  const trailerUrl = movie.trailerUrl || DEFAULT_TRAILERS[movie.title.trim().toLowerCase()];
 
   return (
     <div className="page">
@@ -102,6 +110,16 @@ export default function MovieDetail() {
             {movie.year} · {movie.genre} · Directed by {movie.director}
           </p>
           <p>{movie.description}</p>
+          {trailerUrl && (
+            <a
+              href={trailerUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="trailer-button"
+            >
+              Watch Trailer
+            </a>
+          )}
           {isOwner && (
             <div className="owner-actions">
               <Link to={`/movies/${movieId}/edit`} className="link-button">
