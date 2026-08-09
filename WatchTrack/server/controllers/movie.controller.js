@@ -2,6 +2,7 @@ import Movie from "../models/movie.model.js";
 import extend from "lodash/extend.js";
 import errorHandler from "./error.controller.js";
 import Review from "../models/review.model.js";
+import User from "../models/user.model.js";
 
 const create = async (req, res) => {
   const movie = new Movie(req.body);
@@ -86,6 +87,7 @@ const remove = async (req, res) => {
   try {
     let movie = req.movie;
     await Review.deleteMany({ movie: movie._id });
+    await User.updateMany({}, { $pull: { favorites: movie._id } });
     let deletedMovie = await movie.deleteOne();
     res.json(deletedMovie);
   } catch (err) {

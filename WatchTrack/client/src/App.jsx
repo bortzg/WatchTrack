@@ -9,6 +9,7 @@ import SignUp from "./pages/SignUp.jsx";
 import MyProfile from "./pages/MyProfile.jsx";
 import UsersList from "./pages/UsersList.jsx";
 import EditMovie from "./pages/EditMovie.jsx";
+import Favorites from "./pages/Favorites.jsx";
 
 export default function App() {
   return (
@@ -31,6 +32,14 @@ export default function App() {
             element={
               <PrivateRoute>
                 <EditMovie />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/favorites"
+            element={
+              <PrivateRoute>
+                <Favorites />
               </PrivateRoute>
             }
           />

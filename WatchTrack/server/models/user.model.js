@@ -26,6 +26,12 @@ const UserSchema = new mongoose.Schema({
     required: "Password is required",
   },
   salt: String,
+  favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Movie",
+    },
+  ],
 });
 UserSchema.virtual("password")
   .set(function (password) {

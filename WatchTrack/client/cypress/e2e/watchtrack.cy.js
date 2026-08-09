@@ -34,6 +34,14 @@ describe("WatchTrack complete user journey", () => {
     cy.contains("button", "Add Movie").click();
     cy.contains("h1", movieTitle).should("be.visible");
 
+    cy.contains("button", "Add to Favorites").click();
+    cy.contains("button", "Remove from Favorites").should("be.visible");
+    cy.contains("a", "My Favorites").click();
+    cy.contains("h1", "My Favorites").should("be.visible");
+    cy.contains("h3", movieTitle).should("be.visible").click();
+    cy.contains("button", "Remove from Favorites").click();
+    cy.contains("button", "Add to Favorites").should("be.visible");
+
     cy.contains("a", "Edit Movie").click();
     cy.get('input[name="title"]').clear().type(updatedMovieTitle);
     cy.contains("button", "Save Changes").click();

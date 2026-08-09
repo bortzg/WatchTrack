@@ -35,6 +35,13 @@ export const updateUser = (userId, updates, token) =>
 export const deleteUser = (userId, token) =>
   request(`/api/users/${userId}`, { method: "DELETE", token });
 
+// --- Favorites ---
+export const getFavorites = (token) => request("/api/favorites", { token });
+export const addFavorite = (movieId, token) =>
+  request(`/api/favorites/${movieId}`, { method: "POST", token });
+export const removeFavorite = (movieId, token) =>
+  request(`/api/favorites/${movieId}`, { method: "DELETE", token });
+
 // --- Movies ---
 export const getMovies = (search) =>
   request(`/api/movies${search ? `?search=${encodeURIComponent(search)}` : ""}`);
