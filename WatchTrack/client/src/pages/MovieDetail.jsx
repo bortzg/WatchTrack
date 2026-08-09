@@ -7,6 +7,9 @@ import {
   updateReview,
   deleteReview,
   deleteMovie,
+  getFavorites,
+  addFavorite,
+  removeFavorite,
 } from "../api/api.js";
 import { useAuth } from "../context/auth.context.jsx";
 import ReviewList from "../components/ReviewList.jsx";
@@ -29,13 +32,17 @@ export default function MovieDetail() {
   const [comment, setComment] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [favoriteLoading, setFavoriteLoading] = useState(false);
 
   const loadData = () => {
     setLoading(true);
-    Promise.all([getMovie(movieId), getReviews(movieId)])
-      .then(([movieData, reviewData]) => {
+    const favoritesRequest = token ? getFavorites(token) : Promise.resolve([]);
+    Promise.all([getMovie(movieId), getReviews(movieId), favoritesRequest])
+      .then(([movieData, reviewData, favoriteMovies]) => {
         setMovie(movieData);
         setReviews(reviewData);
+        setIsFavorite(favoriteMovies.some((favorite) => favorite._id === movieId));
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
@@ -44,7 +51,29 @@ export default function MovieDetail() {
   useEffect(() => {
     loadData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [movieId]);
+  }, [movieId, token]);
+
+  const handleFavoriteToggle = async () => {
+    if (!token) {
+      navigate("/signin");
+      return;
+    }
+    setError("");
+    setFavoriteLoading(true);
+    try {
+      if (isFavorite) {
+        await removeFavorite(movieId, token);
+        setIsFavorite(false);
+      } else {
+        await addFavorite(movieId, token);
+        setIsFavorite(true);
+      }
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setFavoriteLoading(false);
+    }
+  };
 
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
@@ -110,6 +139,14 @@ export default function MovieDetail() {
             {movie.year} · {movie.genre} · Directed by {movie.director}
           </p>
           <p>{movie.description}</p>
+          <button
+            type="button"
+            className={`favorite-button${isFavorite ? " is-favorite" : ""}`}
+            onClick={handleFavoriteToggle}
+            disabled={favoriteLoading}
+          >
+            {isFavorite ? "♥ Remove from Favorites" : "♡ Add to Favorites"}
+          </button>
           {trailerUrl && (
             <a
               href={trailerUrl}

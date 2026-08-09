@@ -30,6 +30,9 @@ export default function Navbar() {
             <NavLink to="/users" className={linkClass}>
               Users
             </NavLink>
+            <NavLink to="/favorites" className={linkClass}>
+              My Favorites
+            </NavLink>
             <NavLink to="/profile" className={linkClass}>
               MyProfile
             </NavLink>
