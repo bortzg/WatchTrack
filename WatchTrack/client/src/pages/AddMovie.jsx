@@ -14,6 +14,7 @@ export default function AddMovie() {
     genre: "",
     description: "",
     posterUrl: "",
+    trailerUrl: "",
   });
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -68,7 +69,17 @@ export default function AddMovie() {
         </label>
         <label>
           Poster URL (optional)
-          <input name="posterUrl" value={form.posterUrl} onChange={handleChange} />
+          <input name="posterUrl" type="url" value={form.posterUrl} onChange={handleChange} />
+        </label>
+        <label>
+          Trailer URL (optional)
+          <input
+            name="trailerUrl"
+            type="url"
+            placeholder="https://www.youtube.com/watch?v=..."
+            value={form.trailerUrl}
+            onChange={handleChange}
+          />
         </label>
         <label>
           Description

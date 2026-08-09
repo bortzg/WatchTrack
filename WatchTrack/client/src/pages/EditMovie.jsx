@@ -26,6 +26,7 @@ export default function EditMovie() {
           genre: movie.genre,
           description: movie.description || "",
           posterUrl: movie.posterUrl || "",
+          trailerUrl: movie.trailerUrl || "",
         });
       })
       .catch((err) => setError(err.message));
@@ -79,7 +80,17 @@ export default function EditMovie() {
         </label>
         <label>
           Poster URL (optional)
-          <input name="posterUrl" value={form.posterUrl} onChange={handleChange} />
+          <input name="posterUrl" type="url" value={form.posterUrl} onChange={handleChange} />
+        </label>
+        <label>
+          Trailer URL (optional)
+          <input
+            name="trailerUrl"
+            type="url"
+            placeholder="https://www.youtube.com/watch?v=..."
+            value={form.trailerUrl}
+            onChange={handleChange}
+          />
         </label>
         <label>
           Description

@@ -309,6 +309,21 @@ button:disabled {
   margin-top: 1rem;
 }
 
+.trailer-button {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 600;
+}
+
+.trailer-button:hover {
+  background: var(--accent-dark);
+}
+
 .review-actions {
   display: flex;
   gap: 1rem;

@@ -28,6 +28,12 @@ const MovieSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
+  trailerUrl: {
+    type: String,
+    trim: true,
+    set: (value) => value || undefined,
+    match: [/^https?:\/\//i, "Trailer URL must start with http:// or https://"],
+  },
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",

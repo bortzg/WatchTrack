@@ -59,7 +59,15 @@ const read = (req, res) => {
 const update = async (req, res) => {
   try {
     let movie = req.movie;
-    const allowedFields = ["title", "director", "year", "genre", "description", "posterUrl"];
+    const allowedFields = [
+      "title",
+      "director",
+      "year",
+      "genre",
+      "description",
+      "posterUrl",
+      "trailerUrl",
+    ];
     const updates = Object.fromEntries(
       Object.entries(req.body).filter(([key]) => allowedFields.includes(key))
     );
