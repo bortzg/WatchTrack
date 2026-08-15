@@ -8,7 +8,7 @@ router
   .route("/api/reviews/:reviewId")
   .get(reviewCtrl.read)
   .put(authCtrl.requireSignin, reviewCtrl.isOwner, reviewCtrl.update)
-  .delete(authCtrl.requireSignin, reviewCtrl.isOwner, reviewCtrl.remove);
+  .delete(authCtrl.requireSignin, authCtrl.requireAdmin, reviewCtrl.remove);
 
 router.param("reviewId", reviewCtrl.reviewByID);
 

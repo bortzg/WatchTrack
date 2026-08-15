@@ -4,7 +4,12 @@ import errorHandler from "./error.controller.js";
 import Movie from "../models/movie.model.js";
 import Review from "../models/review.model.js";
 const create = async (req, res) => {
-  const user = new User(req.body);
+  // Never accept a role from public registration.
+  const user = new User({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+  });
   try {
     await user.save();
     return res.status(200).json({
@@ -18,7 +23,7 @@ const create = async (req, res) => {
 };
 const list = async (req, res) => {
   try {
-    let users = await User.find().select("name updated created");
+    let users = await User.find().select("name role updated created");
     res.json(users);
   } catch (err) {
     return res.status(400).json({

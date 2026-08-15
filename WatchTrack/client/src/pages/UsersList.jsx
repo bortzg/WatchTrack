@@ -26,6 +26,7 @@ export default function UsersList() {
         <thead>
           <tr>
             <th>Name</th>
+            <th>Role</th>
             <th>Joined</th>
           </tr>
         </thead>
@@ -33,6 +34,7 @@ export default function UsersList() {
           {users.map((u) => (
             <tr key={u._id}>
               <td>{u.name}</td>
+              <td>{u.role}</td>
               <td>{new Date(u.created).toLocaleDateString()}</td>
             </tr>
           ))}

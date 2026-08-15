@@ -20,6 +20,7 @@ const signin = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
       },
     });
   } catch (err) {
@@ -45,4 +46,15 @@ const hasAuthorization = (req, res, next) => {
   }
   next();
 };
-export default { signin, signout, requireSignin, hasAuthorization };
+const requireAdmin = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.auth._id).select("role");
+    if (!user || user.role !== "admin") {
+      return res.status(403).json({ error: "Admin access is required" });
+    }
+    next();
+  } catch {
+    return res.status(403).json({ error: "Admin access is required" });
+  }
+};
+export default { signin, signout, requireSignin, hasAuthorization, requireAdmin };
