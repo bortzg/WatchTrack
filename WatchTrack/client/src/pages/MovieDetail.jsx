@@ -37,7 +37,12 @@ export default function MovieDetail() {
 
   const loadData = () => {
     setLoading(true);
-    const favoritesRequest = token ? getFavorites(token) : Promise.resolve([]);
+    setError("");
+    // Favorites are optional page data. An expired token must not prevent the
+    // public movie details and reviews from being displayed.
+    const favoritesRequest = token
+      ? getFavorites(token).catch(() => [])
+      : Promise.resolve([]);
     Promise.all([getMovie(movieId), getReviews(movieId), favoritesRequest])
       .then(([movieData, reviewData, favoriteMovies]) => {
         setMovie(movieData);
@@ -118,6 +123,7 @@ export default function MovieDetail() {
   };
 
   if (loading) return <div className="page">Loading...</div>;
+  if (error && !movie) return <div className="page error-text">{error}</div>;
   if (!movie) return <div className="page">Movie not found.</div>;
 
   const isAdmin = token && user?.role === "admin";
