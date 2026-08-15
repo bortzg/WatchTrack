@@ -17,7 +17,11 @@ async function request(path, { method = "GET", body, token } = {}) {
   const data = await res.json().catch(() => ({}));
 
   if (!res.ok) {
-    throw new Error(data.error || "Something went wrong");
+    if (data.error) throw new Error(data.error);
+    if (res.status === 404) {
+      throw new Error(`API endpoint not found: ${path}`);
+    }
+    throw new Error(`Request failed (${res.status})`);
   }
   return data;
 }
