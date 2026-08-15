@@ -23,8 +23,13 @@ const create = async (req, res) => {
 };
 const list = async (req, res) => {
   try {
-    let users = await User.find().select("name role updated created");
-    res.json(users);
+    const users = await User.find().select("name role updated created");
+    res.json(
+      users.map((user) => ({
+        ...user.toObject(),
+        role: user.role || "user",
+      }))
+    );
   } catch (err) {
     return res.status(400).json({
       error: errorHandler.getErrorMessage(err),
@@ -49,6 +54,7 @@ const userByID = async (req, res, next, id) => {
 const read = (req, res) => {
   req.profile.hashed_password = undefined;
   req.profile.salt = undefined;
+  if (!req.profile.role) req.profile.role = "user";
   return res.json(req.profile);
 };
 const update = async (req, res) => {

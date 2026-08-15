@@ -34,7 +34,7 @@ export default function UsersList() {
           {users.map((u) => (
             <tr key={u._id}>
               <td>{u.name}</td>
-              <td>{u.role}</td>
+              <td>{u.role || "user"}</td>
               <td>{new Date(u.created).toLocaleDateString()}</td>
             </tr>
           ))}
