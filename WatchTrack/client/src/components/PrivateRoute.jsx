@@ -1,8 +1,9 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "../context/auth.context.jsx";
 
-export default function PrivateRoute({ children }) {
-  const { token } = useAuth();
+export default function PrivateRoute({ children, adminOnly = false }) {
+  const { token, user } = useAuth();
   if (!token) return <Navigate to="/signin" replace />;
+  if (adminOnly && user?.role !== "admin") return <Navigate to="/" replace />;
   return children;
 }

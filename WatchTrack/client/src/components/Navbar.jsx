@@ -24,9 +24,11 @@ export default function Navbar() {
         </NavLink>
         {token ? (
           <>
-            <NavLink to="/movies/new" className={linkClass}>
-              Add Movie
-            </NavLink>
+            {user?.role === "admin" && (
+              <NavLink to="/movies/new" className={linkClass}>
+                Add Movie
+              </NavLink>
+            )}
             <NavLink to="/users" className={linkClass}>
               Users
             </NavLink>
@@ -36,7 +38,9 @@ export default function Navbar() {
             <NavLink to="/profile" className={linkClass}>
               MyProfile
             </NavLink>
-            <span className="nav-user">Hi, {user?.name}</span>
+            <span className="nav-user">
+              Hi, {user?.role === "admin" ? "Administrator" : user?.name}
+            </span>
             <button onClick={handleLogout} className="link-button">
               Signout
             </button>

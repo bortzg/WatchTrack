@@ -5,7 +5,7 @@ import { useAuth } from "../context/auth.context.jsx";
 
 export default function EditMovie() {
   const { movieId } = useParams();
-  const { token, user } = useAuth();
+  const { token } = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState(null);
@@ -15,10 +15,6 @@ export default function EditMovie() {
   useEffect(() => {
     getMovie(movieId)
       .then((movie) => {
-        if (movie.createdBy !== user?._id) {
-          setError("You can only edit movies you added.");
-          return;
-        }
         setForm({
           title: movie.title,
           director: movie.director,
@@ -30,7 +26,7 @@ export default function EditMovie() {
         });
       })
       .catch((err) => setError(err.message));
-  }, [movieId, user]);
+  }, [movieId]);
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 

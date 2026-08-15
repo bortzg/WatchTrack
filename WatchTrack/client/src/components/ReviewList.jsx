@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function ReviewList({ reviews, currentUserId, onDelete, onUpdate }) {
+export default function ReviewList({ reviews, currentUserId, isAdmin, onDelete, onUpdate }) {
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({ rating: 5, comment: "" });
 
@@ -69,6 +69,15 @@ export default function ReviewList({ reviews, currentUserId, onDelete, onUpdate 
                     <button className="link-button" onClick={() => startEdit(review)}>
                       Edit
                     </button>
+                    {isAdmin && (
+                      <button className="link-button" onClick={() => onDelete(review._id)}>
+                        Delete
+                      </button>
+                    )}
+                  </div>
+                )}
+                {!isMine && isAdmin && (
+                  <div className="review-actions">
                     <button className="link-button" onClick={() => onDelete(review._id)}>
                       Delete
                     </button>

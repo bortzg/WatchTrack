@@ -34,7 +34,10 @@ export default function MyProfile() {
       if (form.password) payload.password = form.password;
 
       const updated = await updateUser(user._id, payload, token);
-      login({ token, user: { _id: updated._id, name: updated.name, email: updated.email } });
+      login({
+        token,
+        user: { _id: updated._id, name: updated.name, email: updated.email, role: updated.role },
+      });
       setForm({ ...form, password: "" });
       setSuccess("Profile updated successfully.");
     } catch (err) {

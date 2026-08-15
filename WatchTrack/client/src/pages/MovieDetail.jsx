@@ -120,7 +120,7 @@ export default function MovieDetail() {
   if (loading) return <div className="page">Loading...</div>;
   if (!movie) return <div className="page">Movie not found.</div>;
 
-  const isOwner = token && user?._id === movie.createdBy;
+  const isAdmin = token && user?.role === "admin";
   const trailerUrl = movie.trailerUrl || DEFAULT_TRAILERS[movie.title.trim().toLowerCase()];
 
   return (
@@ -157,7 +157,7 @@ export default function MovieDetail() {
               Watch Trailer
             </a>
           )}
-          {isOwner && (
+          {isAdmin && (
             <div className="owner-actions">
               <Link to={`/movies/${movieId}/edit`} className="link-button">
                 Edit Movie
@@ -202,6 +202,7 @@ export default function MovieDetail() {
         <ReviewList
           reviews={reviews}
           currentUserId={user?._id}
+          isAdmin={isAdmin}
           onDelete={handleReviewDelete}
           onUpdate={handleReviewUpdate}
         />

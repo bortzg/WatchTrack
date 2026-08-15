@@ -22,7 +22,7 @@ export default function App() {
           <Route
             path="/movies/new"
             element={
-              <PrivateRoute>
+              <PrivateRoute adminOnly>
                 <AddMovie />
               </PrivateRoute>
             }
@@ -30,7 +30,7 @@ export default function App() {
           <Route
             path="/movies/:movieId/edit"
             element={
-              <PrivateRoute>
+              <PrivateRoute adminOnly>
                 <EditMovie />
               </PrivateRoute>
             }
